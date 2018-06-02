@@ -1,74 +1,82 @@
-import hashlib
-import requests
-import urllib
-import urllib.parse
-import json
-import hmac
-import time
+from .connection import Connection
 
-class CoinFalcon():
+class Client():
+    ENDPOINT = 'https://coinfalcon.com'
 
-    def __init__(self, key, secret):
-        self.key = key
-        self.secret = secret
-        self.endpoint = 'https://staging.coinfalcon.com/api/v1'
+    def __init__(self, key, secret, endpoint = ENDPOINT):
+        self.conn = Connection(key, secret, endpoint)
 
-    def request_path(self, url):
-        query = urllib.parse.urlparse(url).query
-        if query == '':
-            return urllib.parse.urlparse(url).path
-        return urllib.parse.urlparse(url).path + '?' + query
+    def accounts(self):
+        path = 'user/accounts'
 
-    def get_headers(self, method, request_path, body={}):
-        timestamp = str(int(time.time()))
+        return self.conn.get(path)
 
-        if method == 'GET':
-            payload = '|'.join([timestamp, method, request_path])
-        else:
-            payload = '|'.join([timestamp, method, request_path, json.dumps(body, separators=(',', ':'))])
+    def create_order(self, order):
+        path = 'user/orders'
 
-        print(payload)
-        message = bytes(payload, 'utf-8')
-        secret = bytes(self.secret, 'utf-8')
-
-        signature = hmac.new(secret, message, hashlib.sha256).hexdigest()
-        return {
-            "CF-API-KEY": self.key,
-            "CF-API-TIMESTAMP": timestamp,
-            "CF-API-SIGNATURE": signature
-        }
-
-    def create_order(self, body):
-        url = self.endpoint + "/user/orders"
-        headers = self.get_headers('POST', urllib.parse.urlparse(url).path, body)
-        return requests.post(url, headers=headers, data=body).json()
+        return self.conn.post(path, order)
 
     def cancel_order(self, id):
-        url = self.endpoint + "/user/orders/{}".format(id)
-        print(url)
-        headers = self.get_headers('DELETE', urllib.parse.urlparse(url).path, {})
-        return requests.delete(url, headers=headers).json()
+        path = "user/orders/{}".format(id)
 
-    def my_orders(self):
-        url = self.endpoint + "/user/orders"
-        headers = self.get_headers('GET', urllib.parse.urlparse(url).path)
-        return requests.get(url, headers=headers).json()
+        return self.conn.delete(path)
+
+    def my_orders(self, params = None):
+        path = 'user/orders'
+
+        return self.conn.get(path, params)
+
+    def my_trades(self, params = None):
+        path = 'user/trades'
+
+        return self.conn.get(path, params)
 
     def deposit_address(self, currency):
-        url = self.endpoint + "/account/deposit_address?currency={}".format(currency)
-        headers = self.get_headers('GET', self.request_path(url))
-        return requests.get(url, headers=headers).json()
+        path = 'account/deposit_address'
 
-    def orderbook(self, market):
-        url = self.endpoint + "/markets/{}/orders".format(market)
-        print(url)
-        print(requests.get(url).text)
-        return requests.get(url).json()
+        return self.conn.get(path, { 'currency': currency })
 
-# client = CoinFalcon('abf59bd6-7270-453f-9ae0-89f8cb879d3f', 'd35d0298-8b27-4255-8750-50619da67a65')
-# print(client.orderbook('IOT-BTC'))
-# print(client.my_orders())
-# result = client.create_order({'market': 'BTC-EUR', 'operation_type': 'market_order', 'order_type': 'sell', 'size': '0.1'})
-# print(result)
-# print(client.cancel_order(result['data']['id']))
-# print(client.deposit_address('btc'))
+    def deposit_history(self, params = None):
+        path = 'account/deposits'
+
+        return self.conn.get(path, params)
+
+    def deposit_details(self, id):
+        path = 'account/deposit'
+
+        return self.conn.get(path, { 'id': id })
+
+    def create_withdrawal(self, params):
+        path = 'account/withdraw'
+
+        return self.conn.post(path, params)
+
+    def withdrawal_details(self, id):
+        path = 'account/withdrawal'
+
+        return self.conn.get(path, { 'id': id })
+
+    def withdrawal_history(self, params = None):
+        path = 'account/withdrawals'
+
+        return self.conn.get(path, params)
+
+    def cancel_withdrawal(self, id):
+        path = "account/withdrawals/{}".format(id)
+
+        return self.conn.delete(path)
+
+    def trades(self, market, params = None):
+        path = "markets/{}/trades".format(market)
+
+        return self.conn.get(path, params)
+
+    def orderbook(self, market, params = None):
+        path = "markets/{}/orders".format(market)
+
+        return self.conn.get(path, params)
+
+    def fees(self):
+        path = 'user/fees'
+
+        return self.conn.get(path)

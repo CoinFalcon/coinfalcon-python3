@@ -1,7 +1,10 @@
 README.md
 setup.py
 coin_falcon/__init__.py
+coin_falcon/cipher.py
 coin_falcon/client.py
+coin_falcon/connection.py
+coin_falcon/request.py
 coin_falcon.egg-info/PKG-INFO
 coin_falcon.egg-info/SOURCES.txt
 coin_falcon.egg-info/dependency_links.txt

@@ -1,0 +1,136 @@
+# CoinFalcon Python Package
+
+The CoinFalcon Python Package provides convenient access to the CoinFalcon API from applications written in the Python language.
+
+# Usage
+
+The client needs to be configured with your account's key and secret which is available in your CoinFalcon Dashboard:
+
+# API Client
+
+```python
+from coin_falcon.client import Client
+
+client = Client(key, secret)
+```
+
+It is also possible to set up an API endpoint and version:
+
+```python
+client = Client(key, secret, endpoint)
+```
+
+Defaults:
+
+```python
+ENDPOINT = 'https://coinfalcon.com'
+VERSION = 1
+```
+
+## Accounts
+
+```python
+res = client.accounts()
+print(res)
+```
+
+## Create order
+
+```python
+res = client.create_order({'market': 'ETH-BTC', 'operation_type': 'limit_order', 'order_type': 'buy', 'size': '0.01', 'price': '0.05'})
+print(res)
+```
+
+## Cancel order
+
+```python
+res = client.cancel_order('547a730e-42b9-4dab-9abf-ed37b08a2947')
+print(res)
+```
+
+## List orders
+
+```python
+res = client.my_orders()
+print(res)
+```
+
+```python
+res = client.my_orders({'market': 'ETH-BTC'})
+print(res)
+```
+
+## List trades
+
+```python
+res = client.my_trades({'market': 'ETH-BTC'})
+print(res)
+```
+
+## Deposit address
+
+```python
+res = client.deposit_address('btc')
+print(res)
+```
+
+## Deposit history
+
+```python
+res = client.deposit_history()
+print(res)
+```
+
+## Deposit details
+
+```python
+res = client.deposit_details('bf6f203a-8f1c-4594-ae49-6c68ab804581')
+print(res)
+```
+
+## List orderbook
+
+```python
+res = client.orderbook('ETH-BTC')
+print(res)
+```
+
+```python
+res = client.orderbook('ETH-BTC', {'level': 3})
+print(res)
+```
+
+## Fees
+
+```python
+res = client.fees()
+print(res)
+```
+
+## Withdrawal history
+
+```python
+res = client.withdrawal_history()
+print(res)
+```
+
+## Create withdrawal
+
+```python
+res = client.create_withdrawal({'currency': 'btc', 'address': '2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF', 'amount': '0.1'})
+print(res)
+```
+
+## Withdrawal details
+
+```python
+res = client.withdrawal_details('a2a70c40-cad3-46c7-bb4f-a6160de1eaf6')
+print(res)
+```
+
+## List market's trades
+
+```python
+res = client.trades('ETH-BTC')
+print(res)
+```

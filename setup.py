@@ -11,7 +11,7 @@ setuptools.setup(
     description="Python package for the CoinFalcon API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/nick/folder",
+    url="https://github.com/thetonyrom/coin_falcon_py",
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",

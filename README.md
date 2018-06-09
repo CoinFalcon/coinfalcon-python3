@@ -134,3 +134,24 @@ print(res)
 res = client.trades('ETH-BTC')
 print(res)
 ```
+
+## Websocket Client
+
+```python
+from coin_falcon.websocket_client import WebsocketClient
+
+ws_client = WebsocketClient(key, secret)
+```
+
+### Set up channels
+
+```python
+ws_client.channels.append({ "command": "subscribe", "identifier": "{\"channel\":\"OrderbookChannel\",\"market\":\"ETH-BTC\"}" })
+ws_client.channels.append({ "command": "subscribe", "identifier": "{\"channel\":\"UserTradesChannel\",\"market\":\"ETH-BTC\"}" })
+```
+
+### Run feed
+
+```python
+ws_client.feed()
+```

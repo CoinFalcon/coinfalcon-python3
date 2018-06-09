@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: coin-falcon
-Version: 0.0.1
+Version: 0.0.2
 Summary: Python package for the CoinFalcon API
 Home-page: https://github.com/thetonyrom/coin_falcon_py
 Author: Tony Rom
@@ -141,6 +141,27 @@ Description: # CoinFalcon Python Package
         ```python
         res = client.trades('ETH-BTC')
         print(res)
+        ```
+        
+        ## Websocket Client
+        
+        ```python
+        from coin_falcon.websocket_client import WebsocketClient
+        
+        ws_client = WebsocketClient(key, secret)
+        ```
+        
+        ### Set up channels
+        
+        ```python
+        ws_client.channels.append({ "command": "subscribe", "identifier": "{\"channel\":\"OrderbookChannel\",\"market\":\"ETH-BTC\"}" })
+        ws_client.channels.append({ "command": "subscribe", "identifier": "{\"channel\":\"UserTradesChannel\",\"market\":\"ETH-BTC\"}" })
+        ```
+        
+        ### Run feed
+        
+        ```python
+        ws_client.feed()
         ```
         
 Platform: UNKNOWN

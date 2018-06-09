@@ -34,27 +34,3 @@ class Cipher():
 
         return '|'.join([timestamp, *attrs])
 
-    # def request_path(self, url):
-    #     query = urllib.parse.urlparse(url).query
-    #     if query == '':
-    #         return urllib.parse.urlparse(url).path
-    #     return urllib.parse.urlparse(url).path + '?' + query
-
-    # def get_headers(self, method, request_path, body={}):
-    #     timestamp = str(int(time.time()))
-
-    #     if method == 'GET':
-    #         payload = '|'.join([timestamp, method, request_path])
-    #     else:
-    #         payload = '|'.join([timestamp, method, request_path, json.dumps(body, separators=(',', ':'))])
-
-    #     print(payload)
-    #     message = bytes(payload, 'utf-8')
-    #     secret = bytes(self.secret, 'utf-8')
-
-    #     signature = hmac.new(secret, message, hashlib.sha256).hexdigest()
-    #     return {
-    #         "CF-API-KEY": self.key,
-    #         "CF-API-TIMESTAMP": timestamp,
-    #         "CF-API-SIGNATURE": signature
-    #     }

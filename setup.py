@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="coin_falcon",
-    version="0.0.1",
+    version="0.0.2",
     author="Tony Rom",
     author_email="thetonyrom@gmail.com",
     description="Python package for the CoinFalcon API",
